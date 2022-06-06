@@ -21,14 +21,14 @@ jobs:
         shell: python
   job2_run-windows_serial:
     runs-on: windows-latest
-    needs: ["job1_run-ubuntu-commands"]
+    needs: ["job1_run-ubuntu"]
     steps:
       - name: Directory PowerShell
         run: Get-Location
       - name: Directory Bash
         run: pwd
         shell: bash
-  job2_run-parallel:
+  job3_run-ubuntu-parallel:
     runs-on: ubuntu-latest
     steps:
       - name: step1 echo a string
