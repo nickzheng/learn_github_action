@@ -1,6 +1,7 @@
 name: workflow1
 
-on: [pull_request]
+on:
+  pull_request
 
 jobs:
   job1_run-ubuntu:
