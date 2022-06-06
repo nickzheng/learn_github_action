@@ -83,6 +83,11 @@ jobs:
         run: echo '${{ toJSON(strategy) }}'
       - name: Dump matrix context
         run: echo '${{ toJSON(matrix) }}'
+      - name: failed step
+        run: eccho "1111"
+      - name: only run in failure
+        if: failure()
+        run: echo "only run in failure"
   functions:
     runs-on: ubuntu-latest
     if: github.event_name != 'push'
