@@ -3,7 +3,7 @@ name: workflow1
 on: [push]
 
 jobs:
-  job1:
+  job1_run-ubuntu-commands:
     runs-on: ubuntu-latest
     steps:
       - name: step1 echo a string
@@ -19,3 +19,12 @@ jobs:
           print
           (platform.processor())
         shell: python
+  job2_run-windwos-commands:
+    runs-on: windows-latest
+    needs: ["job1_run-ubuntu-commands"]
+    steps:
+      - name: Directory PowerShell
+        run: Get-Location
+      - name: Directory Bash
+        run: pwd
+        shell: bash
