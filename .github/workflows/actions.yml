@@ -1,6 +1,6 @@
 name: Event Payload Actions Workflow
 
-on: ["push", pull_request]
+on: [pull_request]
 
 jobs:
   run-github-actions:
