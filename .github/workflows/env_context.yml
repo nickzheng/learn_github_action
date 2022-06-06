@@ -67,7 +67,7 @@ jobs:
           echo "workflow_ENV: ${workflow_ENV}"
           echo "JOB_ENV: ${JOB_ENV}"
           echo "STEP_ENV: ${STEP_ENV}"
-  dump_contexts_to_log:
+  context:
     runs-on: ubuntu-latest
     steps:
       - name: Dump GitHub context
@@ -83,3 +83,12 @@ jobs:
         run: echo '${{ toJSON(strategy) }}'
       - name: Dump matrix context
         run: echo '${{ toJSON(matrix) }}'
+  functions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: dump
+        run: |
+          echo ${{ contains( 'hello', '11' ) }}
+          echo ${{ startsWith( 'hello', 'he' ) }}
+          echo ${{ endsWith( 'hello', '1o' ) }}
+          echo ${{ format( 'Hello {0} {1} {2}', 'World', '!', '!' ) }}
