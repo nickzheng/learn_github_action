@@ -16,10 +16,6 @@ jobs:
         run: |
           pwd
           ls -a
-          echo '$GITHUB_SHA' $GITHUB_SHA
-          echo '$GITHUB_REPOSITORY' $GITHUB_REPOSITORY
-          echo '$GITHUB_WORKSPACE' $GITHUB_WORKSPACE
-          echo github.token "${{ github.token }}"
       - name: Checkout
         uses: actions/checkout@v1
       - name: List Files After Checkout
