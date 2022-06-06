@@ -86,7 +86,7 @@ jobs:
   functions:
     runs-on: ubuntu-latest
     steps:
-      - name: dump
+      - name: functions
         run: |
           echo ${{ contains( 'hello', '11' ) }}
           echo ${{ startsWith( 'hello', 'he' ) }}
