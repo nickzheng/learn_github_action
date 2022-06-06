@@ -1,8 +1,12 @@
 name: Event Payload Actions Workflow
 
 on:
-  pull_request
-
+  push:
+    branches:
+      - main
+      - "feature/**" # matches featur/featA, feature/featB, doesn't match feature/feat/a
+      - "!feature/featc"
+  pull_request:
 jobs:
   run-github-actions:
     runs-on: ubuntu-latest
