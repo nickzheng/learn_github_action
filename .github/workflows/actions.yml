@@ -1,5 +1,4 @@
 name: Event Payload Actions Workflow
-
 on:
   push:
     branches:
