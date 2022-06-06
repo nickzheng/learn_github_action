@@ -1,8 +1,12 @@
 name: workflow1
 
 on:
-  pull_request
-
+  push:
+    branches:
+      - main
+      - "feature/**" # matches featur/featA, feature/featB, doesn't match feature/feat/a
+      - "!feature/featc"
+  pull_request:
 jobs:
   job1_run-ubuntu:
     runs-on: ubuntu-latest
