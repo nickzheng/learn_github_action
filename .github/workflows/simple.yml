@@ -3,13 +3,13 @@ name: Shell Commands
 on: [push]
 
 jobs:
-  run-shell-command:
+  job1:
     runs-on: ubuntu-latest
     steps:
-      - name: echo a string
+      - name: step1 echo a string
         run: echo "Hello World"
         timeout-minutes: 0
-      - name: multiline script
+      - name: step2 multiline script
         run: |
           node -v
           npm -v
