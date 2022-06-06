@@ -85,6 +85,7 @@ jobs:
         run: echo '${{ toJSON(matrix) }}'
   functions:
     runs-on: ubuntu-latest
+    if: github.event_name != 'push'
     steps:
       - name: functions
         run: |
