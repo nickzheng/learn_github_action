@@ -3,7 +3,7 @@ name: workflow1
 on: [push]
 
 jobs:
-  job1_run-ubuntu-commands:
+  job1_run-ubuntu:
     runs-on: ubuntu-latest
     steps:
       - name: step1 echo a string
@@ -19,7 +19,7 @@ jobs:
           print
           (platform.processor())
         shell: python
-  job2_run-windwos-commands:
+  job2_run-windows_serial:
     runs-on: windows-latest
     needs: ["job1_run-ubuntu-commands"]
     steps:
@@ -28,3 +28,9 @@ jobs:
       - name: Directory Bash
         run: pwd
         shell: bash
+  job2_run-parallel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: step1 echo a string
+        run: echo "Hello 2222"
+        timeout-minutes: 0
