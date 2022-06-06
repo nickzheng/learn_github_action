@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  pull_request:
+    branches: 
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Use Node.js 16.x
+        uses: actions/checkout@v2
+        with:
+          node-version: 16.x
+          
+      - name: Install
+        run: npm install
+        
+      - name: Build
+        run: npm run build-static-data
+          
+      - name: Scan for accessibility issues
+        uses: microsoft/accessibility-insights-action@v2
+        with: 
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          site-dir: ${{ github.workspace }}/dist/website 
+          localhost-port: 12345
+          input-urls: http://localhost:12345/profile http://localhost:12345/500 http://localhost:12345/404
+          
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: accessibility-reports
+          path: ${{ github.workspace }}/_accessibility-reports
+
+      - name: Cypress E2E Test on PR URL
+        uses: cypress-io/github-action@v2
+        id: cypress
+        with:
+          browser: chrome
+          spec: |
+            ./cypress/integration/api_management_portal.spec.js
+        env:
+          GPR_TOKEN: ${{ secrets.GPR_TOKEN }}
+          CYPRESS_baseUrl: https://ue2dblkchnapi01.developer.azure-api.net
+          CYPRESS_email: "test.blockchain.ey@gmail.com"
+          CYPRESS_password: "manaf@123"
+
+      # - name: Prepare Newman-Postman Integration Environment
+      #   if: "!contains(steps.commit_msg.outputs.message, 'skip e2e test')"
+      #   env:
+      #     CLIENT_ID: '628f41921ea63fbf63c4bb6f'
+      #     CLIENT_SECRET: '4b0d2f36-9eba-48e5-96de-21c2978cb406'
+      #     CLIENT_ID2: '628f41521ea63fbf63c4bb6e'
+      #     CLIENT_SECRET2: 'cc5cf640-f211-42cd-a38d-6cea847496f3'
+      #     SUBSCRIPTION_KEY: '8341fa246f76468083082aa825528836'
+      #     PARTNER_WALLET: '0x104911392a759BcD9cAb4d77E34c61842F0a6314'
+      #     DEVELOPER_PORTAL_URL: 'https:\/\/ue2dblkchnapi01.azure-api.net\/opschain-tokenization'
+      #   run: |
+      #     sed -i -- "s/{{clientID}}/$CLIENT_ID/" ./postman/envs/Developer-portal.postman_environment.json
+      #     sed -i -- "s/{{clientSecret}}/$CLIENT_SECRET/" ./postman/envs/Developer-portal.postman_environment.json
+      #     sed -i -- "s/{{clientID2}}/$CLIENT_ID2/" ./postman/envs/Developer-portal.postman_environment.json
+      #     sed -i -- "s/{{clientSecret2}}/$CLIENT_SECRET2/" ./postman/envs/Developer-portal.postman_environment.json
+      #     sed -i -- "s/{{subscriptionKey}}/$SUBSCRIPTION_KEY/" ./postman/envs/Developer-portal.postman_environment.json
+      #     sed -i -- "s/{{partnerWallet}}/$PARTNER_WALLET/" ./postman/envs/Developer-portal.postman_environment.json
+      #     sed -i -- "s/{{developerPortalURL}}/$DEVELOPER_PORTAL_URL/" ./postman/envs/Developer-portal.postman_environment.json
+
+      # - name: Execute Newman-Postman Integration Test
+      #   if: "!contains(steps.commit_msg.outputs.message, 'skip e2e test')"
+      #   run: |
+      #     newman run "./postman/collections/API-Gateway-ERC721-Regression-Tests.postman_collection.json" --environment "./postman/envs/Developer-portal.postman_environment.json" --insecure
